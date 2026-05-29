@@ -308,17 +308,6 @@ Register/Login ──▶ Generate JWT Pair ──▶ Set HttpOnly Cookies
 
 ---
 
-## 🌐 Live Demo
-
-| Resource | Link |
-|----------|------|
-| **🔴 Live Demo** | [https://linkmind-ai.vercel.app](https://linkmind-ai.vercel.app) |
-| **📦 GitHub Repository** | [https://github.com/naresh-kamarthy/linkmind-ai.git](https://github.com/naresh-kamarthy/linkmind-ai.git) |
-
-> **Demo Credentials:** Register a new account or use the platform signup to explore all features.
-
----
-
 ## 🚀 Getting Started
 
 ### Prerequisites
@@ -380,14 +369,8 @@ Create a `.env` file in the project root with the following variables:
 |----------|-------------|---------|
 | `NODE_ENV` | Environment mode | `production` |
 | `APP_URL` | Public application URL | `https://linkmind.ai` |
-| `GEMINI_API_KEY` | Google Gemini API key for AI insights | `AIzaSy...` |
+| `GEMINI_API_KEY` | Google Gemini API key for AI insights | `API KEY` |
 | `REDIS_URI` | Redis connection URL (enables caching, BullMQ, Socket.IO adapter) | `redis://user:pass@host:6379` |
-
-### Frontend (Vite)
-
-| Variable | Description | Example |
-|----------|-------------|---------|
-| `VITE_API_URL` | Backend API base URL (if separately deployed) | `https://api.linkmind.ai` |
 
 ```env
 # ─── Server ───────────────────────────────────
@@ -411,81 +394,6 @@ VITE_API_URL=https://api.linkmind.ai
 ```
 
 > **Note:** If `MONGODB_URI` is not set, the app automatically falls back to an in-memory MongoDB instance via `mongodb-memory-server` for development. If `REDIS_URI` is not set, the app gracefully falls back to direct database queries and memory-based batch processing.
-
----
-
-## 📁 Folder Structure
-
-```
-linkmind-ai/
-├── public/
-│   └── favicon.svg              # Brand favicon
-├── server/
-│   ├── config/
-│   │   └── db.ts                # MongoDB connection + memory server fallback
-│   ├── controllers/
-│   │   ├── adminController.ts   # User management, audit logs, global stats
-│   │   ├── analyticsController.ts # Click analytics + AI insights endpoint
-│   │   ├── authController.ts    # Register, login, logout, profile, refresh
-│   │   ├── campaignController.ts # Campaign CRUD operations
-│   │   └── linkController.ts    # Link CRUD, QR generation, CSV/JSON export
-│   ├── middleware/
-│   │   ├── auth.ts              # JWT verification, refresh flow, API key auth, RBAC
-│   │   ├── csrf.ts              # Double-submit CSRF cookie protection
-│   │   └── rateLimiter.ts       # Granular per-route rate limiting
-│   ├── models/
-│   │   ├── Analytics.ts         # Click event schema with compound indexes
-│   │   ├── ApiKey.ts            # Developer API key schema (SHA-256 hashed)
-│   │   ├── AuditLog.ts          # Admin action audit trail schema
-│   │   ├── Campaign.ts          # Campaign grouping schema
-│   │   ├── Link.ts              # URL link schema with all feature flags
-│   │   └── User.ts              # User schema with bcrypt password hashing
-│   ├── routes/
-│   │   ├── adminRoutes.ts       # Admin-only endpoints (RBAC protected)
-│   │   ├── analyticsRoutes.ts   # Analytics data + AI insights
-│   │   ├── apiKeyRoutes.ts      # Developer API key management
-│   │   ├── authRoutes.ts        # Authentication endpoints
-│   │   ├── campaignRoutes.ts    # Campaign management endpoints
-│   │   ├── linkRoutes.ts        # Link CRUD endpoints
-│   │   └── redirectRoutes.ts    # Fast /r/:shortCode redirect handler
-│   ├── scripts/
-│   │   └── seedAdmin.ts         # Admin user seeding script
-│   ├── services/
-│   │   ├── aiService.ts         # Gemini AI integration + heuristic fallbacks
-│   │   ├── cronService.ts       # Background cron: expiry sync + log rotation
-│   │   ├── queueService.ts      # BullMQ click telemetry + memory batch fallback
-│   │   └── redisService.ts      # Redis client, caching, pub/sub management
-│   ├── utils/
-│   │   └── geoLookup.ts         # MaxMind GeoIP resolution utility
-│   └── sockets.ts               # Socket.IO initialization + Redis adapter
-├── src/
-│   ├── components/
-│   │   └── Navbar.tsx           # Navigation bar with auth-aware rendering
-│   ├── hooks/
-│   │   └── useSocket.ts         # Socket.IO React hook for realtime events
-│   ├── pages/
-│   │   ├── Admin.tsx            # Admin dashboard (users, links, audit, stats)
-│   │   ├── Campaigns.tsx        # Campaign management interface
-│   │   ├── Dashboard.tsx        # Main analytics dashboard with live charts
-│   │   ├── LinkDetails.tsx      # Individual link analytics + AI insights
-│   │   ├── Links.tsx            # Link management (create, edit, archive)
-│   │   ├── Login.tsx            # Authentication page (login + register)
-│   │   └── Unlock.tsx           # Password-protected link unlock page
-│   ├── services/
-│   │   └── api.ts               # Axios API client with CSRF + interceptors
-│   ├── store/
-│   │   └── store.ts             # Redux Toolkit store + auth slice
-│   ├── App.tsx                  # Root component with routing + auth guards
-│   ├── index.css                # Global styles + Tailwind directives
-│   ├── main.tsx                 # React entry point
-│   └── types.ts                 # Shared TypeScript interfaces
-├── .env.example                 # Environment variable template
-├── index.html                   # HTML entry point with SEO meta tags
-├── package.json                 # Dependencies and scripts
-├── server.ts                    # Express server entry point
-├── tsconfig.json                # TypeScript configuration
-└── vite.config.ts               # Vite build configuration
-```
 
 ---
 
@@ -593,53 +501,6 @@ LinkMind AI integrates **Google Gemini** (`gemini-3.5-flash`) to transform raw c
 
 ---
 
-## 🚢 Deployment
-
-### Vercel (Frontend)
-
-```bash
-# Install Vercel CLI
-npm i -g vercel
-
-# Deploy
-vercel --prod
-```
-
-Configure in Vercel dashboard:
-- **Build Command:** `npm run build`
-- **Output Directory:** `dist`
-- **Environment Variables:** Set `VITE_API_URL` to your backend URL
-
-### Railway / Render (Backend)
-
-1. Connect your GitHub repository
-2. Set **Build Command:** `npm run build`
-3. Set **Start Command:** `npm run start`
-4. Configure environment variables:
-   - `NODE_ENV=production`
-   - `MONGODB_URI` — your Atlas connection string
-   - `JWT_SECRET` — your secret key
-   - `GEMINI_API_KEY` — your Gemini API key
-   - `REDIS_URI` — your Redis connection URL
-   - `APP_URL` — your production frontend URL
-
-### MongoDB Atlas
-
-1. Create a free cluster at [mongodb.com/atlas](https://www.mongodb.com/atlas)
-2. Create a database user and whitelist your server IPs
-3. Copy the connection string to `MONGODB_URI`
-
-### Production Cookie Configuration
-
-For cross-origin deployments (frontend on Vercel, backend on Railway):
-
-```
-Cookies: Secure=true, SameSite=None, HttpOnly=true
-CORS: origin=<frontend-url>, credentials=true
-```
-
----
-
 ## 🔮 Future Roadmap
 
 - [ ] **GeoIP Dashboard Maps** — Interactive world map visualization of visitor locations
@@ -665,13 +526,13 @@ CORS: origin=<frontend-url>, credentials=true
 </p>
 
 <p align="center">
-  <a href="https://github.com/yourusername">
+  <a href="https://github.com/naresh-kamarthy">
     <img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white" alt="GitHub" />
   </a>
-  <a href="https://linkedin.com/in/yourprofile">
+  <a href="https://www.linkedin.com/in/naresh-kamarthy-aa1239130">
     <img src="https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn" />
   </a>
-  <a href="https://yourportfolio.com">
+  <a href="https://naresh-kamarthy-portfolio.vercel.app">
     <img src="https://img.shields.io/badge/Portfolio-6366f1?style=for-the-badge&logo=google-chrome&logoColor=white" alt="Portfolio" />
   </a>
 </p>
